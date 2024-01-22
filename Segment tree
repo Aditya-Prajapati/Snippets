@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class SegmentTree{
+    vector<int> tree;
+    int size;
+    public:
+        SegmentTree(int _size){
+            size = 4*_size;
+            tree.resize(size, 0);
+        }
+    
+        void buildTree(int node, int start, int end, vector<int>& arr){
+            if (start == end){
+                tree[node] = arr[start];
+                return;
+            }
+            int mid = start + (end - start)/2;
+            buildTree(2*node, start, mid, arr);
+            buildTree(2*node+1, mid+1, end, arr);
+            
+            tree[node] = tree[2*node] + tree[2*node+1];
+            return;
+        }
+                   
+        void printTree(){
+            for (int value: tree){
+                cout << value << " ";
+            } cout << endl;
+        }
+    
+        int query(int node, int start, int end, int left, int right){
+            if (end < left || right < start){
+                return 0;
+            }
+            else if (left <= start && end <= right){
+                return tree[node];
+            }
+            int mid = start + (end-start)/2;
+            int qLeft = query(2*node, start, mid, left, right);
+            int qRight = query(2*node+1, mid+1, end, left, right);
+            return qLeft + qRight;
+        }
+    
+    void update(int node, int start, int end, int idx, int val, vector<int>& arr){
+        if (start == end){
+            arr[start] = val;
+            tree[node] = val;
+            return;
+        }
+        int mid = start + (end-start)/2;
+        if (idx <= mid){
+            update(2*node, start, mid, idx, val, arr);
+        }
+        else {
+            update(2*node+1, mid+1, end, idx, val, arr);
+        }
+        
+        tree[node] = tree[2*node] + tree[2*node+1];
+        return;
+    }
+};
+
+int main() {
+    vector<int> arr = {1,2,3,4,5,6,7,8,9,10};
+    SegmentTree s(10);
+    s.buildTree(1, 0, 9, arr);
+    // s.printTree();
+    // cout << s.query(1, 0, 9, 0, 9) << endl; 
+    // s.update(1, 0, 9, 9, 15, arr);
+    // cout << s.query(1, 0, 9, 0, 9) << endl; 
+    // cout << s.query(1, 0, 9, 4, 9) << endl; 
+    // s.update(1, 0, 9, 4, 15, arr);
+    // cout << s.query(1, 0, 9, 0, 9) << endl; 
+    
+    return 0;
+}
