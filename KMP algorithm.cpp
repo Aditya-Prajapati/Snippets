@@ -51,7 +51,7 @@ vector<int> kmp(string& pattern, string& str){
 }
 
 int main(){
-    string p = "me", str = "memes";
+    string p = "cbc", str = "cbcdcbccb";
     vector<int> ans = kmp(p, str);
     for (int i: ans){
         cout << i << " ";
