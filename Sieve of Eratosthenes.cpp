@@ -3,21 +3,22 @@ using namespace std;
 
 class Sieve{
     public:
-        vector<bool> isPrime;
+        vector<bool> prime;
         int n;
     
         Sieve(int _n){
             n = _n;
-            isPrime.resize(n+1, true);
-        }
-    
-        void markPrimes(){
+            prime.resize(n+1, true);
             for (int num = 2; num*num <= n; num++) {
-                if (isPrime[num] == true) {
+                if (prime[num] == true) {
                     for (int i = num*num; i <= n; i += num)
-                        isPrime[i] = false;
+                        prime[i] = false;
                 }
             }
+        }
+    
+        bool isPrime(int num){
+            return prime[num];
         }
 };
 
@@ -25,8 +26,7 @@ int main(){
     // TC - O(n*log(log(n)))
     // SC - O(n)
     Sieve s(45);
-    s.markPrimes();
-    cout << s.isPrime[29] << endl;
+    cout << s.isPrime(43) << endl;
     
     return 0;
 }
